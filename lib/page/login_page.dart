@@ -9,6 +9,8 @@ import '../redux/main_redux.dart';
 import '../redux/user_reducer.dart';
 import '../utils/const.dart';
 import '../utils/sp.dart';
+import 'package:flutter/animation.dart';
+import 'package:flutter/services.dart';
 
 class LoginPage extends StatefulWidget {
   @override
@@ -19,8 +21,6 @@ class LoginPage extends StatefulWidget {
 }
 
 class LoginPageState extends State<LoginPage> with TickerProviderStateMixin {
-
-  final _loginKey = GlobalKey<ScaffoldState>();
 
 
   Color colorRegular = Color(0xFFFF786E);
@@ -39,7 +39,7 @@ class LoginPageState extends State<LoginPage> with TickerProviderStateMixin {
   TextEditingController accountController = new TextEditingController();
   TextEditingController pwdController = new TextEditingController();
 
-  bool isLogin;
+  bool isLogin = false;
 
   Store _store;
   Store get store => _store;
@@ -48,7 +48,7 @@ class LoginPageState extends State<LoginPage> with TickerProviderStateMixin {
     Fluttertoast.showToast(msg: msg);
   }
 
-  void login() {
+  void login() async {
     String account = accountController.text.toString();
     String pwd = pwdController.text.toString();
     if (account.isEmpty || pwd.isEmpty) {
@@ -77,13 +77,14 @@ class LoginPageState extends State<LoginPage> with TickerProviderStateMixin {
     });
   }
 
-  Future<Null> playAnimate(bool isLogin) async {
+  playAnimate(bool isLogin) async {
     if (isLogin) {
       await animationController.forward();
     } else {
       await animationController.forward();
       await animationController.reverse();
     }
+
   }
 
   @override
@@ -126,7 +127,6 @@ class LoginPageState extends State<LoginPage> with TickerProviderStateMixin {
   Widget build(BuildContext context) {
     // TODO: implement build
     return Scaffold(
-      key: _loginKey,
       body: Container(
         constraints: BoxConstraints.expand(),
         decoration: BoxDecoration(
